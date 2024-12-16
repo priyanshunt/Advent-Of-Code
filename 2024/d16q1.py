@@ -34,13 +34,18 @@ while len(to_visit) > 0:
     for x in new_ele:
         if (x[0], x[1]) not in visit_cost:
             if data[x[0][0]][x[0][1]] == 'E':
+                visit_cost[(x[0], x[1])] = x[2]
                 score.append(x[2])
             elif data[x[0][0]][x[0][1]] == 'S' or data[x[0][0]][x[0][1]] == '.':
                 to_visit.append(x)
                 visit_cost[(x[0], x[1])] = x[2]
         else:
-            if (data[x[0][0]][x[0][1]] == 'S' or data[x[0][0]][x[0][1]] == '.') and x[2] < visit_cost[(x[0], x[1])]:
-                to_visit.append(x)
-                visit_cost[(x[0], x[1])] = x[2]
+            if x[2] < visit_cost[(x[0], x[1])]:
+                if data[x[0][0]][x[0][1]] == 'E':
+                    visit_cost[(x[0], x[1])] = x[2]
+                    score.append(x[2])
+                elif data[x[0][0]][x[0][1]] == 'S' or data[x[0][0]][x[0][1]] == '.':
+                    to_visit.append(x)
+                    visit_cost[(x[0], x[1])] = x[2]            
 
 print(min(score))
