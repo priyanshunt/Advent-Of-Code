@@ -13,7 +13,7 @@ for i in range(l):
     for j in range(l1):
         if data[i][j] == 'S':
             pos = (i, j)
-
+            break
 
 visit_cost = {(pos, '>') : 0}
 to_visit = [(pos, '>', 0)]
