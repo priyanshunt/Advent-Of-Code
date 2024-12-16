@@ -8,6 +8,7 @@ l = len(data)
 l1 = len(data[0])
 
 v = []
+d = [(-1, 0), (1, 0), (0, -1), (0, 1)]
 
 def func(pos):
     if pos in v:
@@ -19,26 +20,16 @@ def func(pos):
         
         i, j = pos
         
-        if i - 1 < 0 or data[i - 1][j] != data[i][j]:
-            t += 1
-        elif data[i - 1][j] == data[i][j]:
-            r += func((i - 1, j))
-        
-        if i + 1 >= l or data[i + 1][j] != data[i][j]:
-            t += 1
-        elif data[i + 1][j] == data[i][j]:
-            r += func((i + 1, j))
-        
-        if j - 1 < 0 or data[i][j - 1] != data[i][j]:
-            t += 1
-        elif data[i][j - 1] == data[i][j]:
-            r += func((i, j - 1))
-        
-        if j + 1 >= l1 or data[i][j + 1] != data[i][j]:
-            t += 1
-        elif data[i][j + 1] == data[i][j]:
-            r += func((i, j + 1))
-        
+        for x in d:
+            m = x[0]
+            m1 = x[1]
+            if 0 <= i + m < l and 0 <= j + m1 < l1:
+                if data[i + m][j + m1] != data[i][j]:
+                    t += 1
+                else:
+                    r += func((i + m, j + m1))
+            else:
+                t += 1
         return r + t
 
 s = 0
@@ -47,8 +38,8 @@ for i in range(l):
         pos = (i, j)
         if pos not in v:
             prev = len(v)
-            per = func(pos) 
+            peri = func(pos) 
             next = len(v)
-            s += per * (next - prev)
+            s += peri * (next - prev)
 
-print(s)        
+print(s)
