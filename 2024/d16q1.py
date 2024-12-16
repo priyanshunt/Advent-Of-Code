@@ -1,10 +1,5 @@
-import sys
-
-sys.setrecursionlimit(10 ** 6)
-INT_MAX = 99999999
-
 d = None
-with open("d6p1.txt") as f:
+with open("d16q1.txt") as f:
     d = f.read().split('\n')
 
 data = [list(x) for x in d]
@@ -13,39 +8,39 @@ l1 = len(data[0])
 
 arrow = {'>' : ((0, 1), '^', 'v'), '<' : ((0, -1), '^', 'v'), '^' : ((1, 0), '>', '<'), 'v' : ((-1, 0), '>', '<')}
 
-visited = {}
-def func(pos, a, li, cost):
-    li.append((pos, a))
-    i, j = pos
-    a1 = arrow[a]
-    i1, j1 = a1[0]
-    new_pos = (i + i1, j + j1)
-    # print(pos, a)
-    if (pos, a) not in visited or cost :
-        visited[(pos, a)] = 9999999
-        c = None
-        if data[i][j] == 'E':
-            c = 1
-            print(li)
-        elif data[i][j] == '.' or data[i][j] == 'S':
-            c = min(1 + func(new_pos, a, li.copy()), 1000 + func(pos, a1[1], li.copy()), 1000 + func(pos, a1[2], li.copy()))
-        else:
-            c = INT_MAX
-        if (pos, a) not in visited or c < visited[(pos, a)]:
-            visited[(pos, a)] = c
-            return c
-        else:
-            return visited[(pos, a)]
-    else:
-        return visited[(pos, a)]
-    
-
 pos = None
 for i in range(l):
     for j in range(l1):
         if data[i][j] == 'S':
             pos = (i, j)
 
-s = func(pos, '>', [], INT_MAX)
 
-print(s)
+visit_cost = {(pos, '>') : 0}
+to_visit = [(pos, '>', 0)]
+score = []
+
+while len(to_visit) > 0:
+    ele = to_visit.pop(0)
+    pos, a, cost = ele
+    i, j = pos
+    
+    a1 = arrow[a]
+    i1, j1 = a1[0]
+    a2 = a1[1]
+    a3 = a1[2]
+
+    new_ele = [((i + i1, j + j1), a, cost + 1), (pos, a2, cost + 1000), (pos, a3, cost + 1000)]
+
+    for x in new_ele:
+        if (x[0], x[1]) not in visit_cost:
+            if data[x[0][0]][x[0][1]] == 'E':
+                score.append(x[2])
+            elif data[x[0][0]][x[0][1]] == 'S' or data[x[0][0]][x[0][1]] == '.':
+                to_visit.append(x)
+                visit_cost[(x[0], x[1])] = x[2]
+        else:
+            if (data[x[0][0]][x[0][1]] == 'S' or data[x[0][0]][x[0][1]] == '.') and x[2] < visit_cost[(x[0], x[1])]:
+                to_visit.append(x)
+                visit_cost[(x[0], x[1])] = x[2]
+
+print(min(score))
