@@ -50,8 +50,6 @@ def func(a):
 ins = d[4].split(' ')[1]
 
 j = 7
-k = 1
-l = []
 while (True):
     val = str(func(j))
     if ins == val:
