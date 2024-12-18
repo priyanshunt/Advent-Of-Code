@@ -1,6 +1,3 @@
-import sys
-sys.setrecursionlimit(10 ** 6)
-
 d = None
 with open("d18q1.txt") as f:
     d = f.read().split('\n')
@@ -39,7 +36,6 @@ def func():
     return best_visited
 
 while True:
-
     visited = func()
 
     if visited is None:
