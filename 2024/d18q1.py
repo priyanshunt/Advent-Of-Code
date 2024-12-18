@@ -1,6 +1,3 @@
-import sys
-sys.setrecursionlimit(10 ** 6)
-
 d = None
 with open("d18q1.txt") as f:
     d = f.read().split('\n')
@@ -15,20 +12,23 @@ for x in d[:ini]:
     data[i][j] = '#'
 
 reached = []
-ver_cost = {}
-def func(pos, visited, cost):
+to_visit = [((0, 0), 0)]
+c = None
+
+while len(to_visit) > 0:
+    pos, cost = to_visit.pop(0)
     i, j = pos
-    if 0 <= i < m and 0 <= j < m and data[i][j] == '.' and pos not in visited and (pos not in ver_cost or ver_cost[pos] > cost):
-        visited.append(pos)
-        ver_cost[pos] = cost
+
+    if pos not in reached and 0 <= i < m and 0 <= j < m and data[i][j] == '.':
+        reached.append(pos)
+
         if pos == (m - 1, m - 1):
-            reached.append(visited)
+            c = cost
+            break
         else:
-            func((i, j + 1), visited.copy(), cost + 1)
-            func((i, j - 1), visited.copy(), cost + 1)
-            func((i + 1, j), visited.copy(), cost + 1)
-            func((i - 1, j), visited.copy(), cost + 1)
+            to_visit.append(((i, j + 1), cost + 1))
+            to_visit.append(((i, j - 1), cost + 1))
+            to_visit.append(((i + 1, j), cost + 1))
+            to_visit.append(((i - 1, j), cost + 1))
 
-func((0, 0), [], 0)
-
-print(min([len(x) for x in reached]) - 1)
+print(cost)
