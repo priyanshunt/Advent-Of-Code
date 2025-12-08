@@ -16,7 +16,7 @@ s = []
 j = 0
 
 for k, v in d1.items():
-    if j == 1000:
+    if j == len(d):
         break
     j += 1
     x, y = k
@@ -49,3 +49,4 @@ for x in s[-3:]:
     p *= len(x)
 
 print(p)
+
